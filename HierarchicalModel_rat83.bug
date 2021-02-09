@@ -1,0 +1,17 @@
+model {
+    for (i in 1:N) {
+      Y[i] ~ dlnorm(log(mu[i]+.0000001), tau[i])T(0,)
+      mu[i] <- Y0*(t[i]<d)+K*(Y0)/((Y0)+(K-Y0)*exp(-r[i]*(t[i]-d)))*(t[i]>=d)
+      tau[i] <- 1/sigma^2
+      r[i] <- ((c * (x[i] - Tmin) * (1 - exp(l * (x[i] - Tmax))))^2) * (x[i] < Tmax) * (x[i] > Tmin) + 0
+      
+  }
+  sigma ~ dexp(.001)
+  Y0 ~ dunif(.001, .01)
+  d ~ dexp(2)
+  K ~ dunif(.1,.6)
+  Tmax ~ dunif(300, 308)
+  Tmin ~ dnorm(277,.5)
+  l ~ dgamma(1,1)
+  c ~ dgamma(1,1)
+}

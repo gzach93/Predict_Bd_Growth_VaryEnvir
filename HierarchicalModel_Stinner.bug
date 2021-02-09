@@ -1,0 +1,19 @@
+model {
+  
+  for (i in 1:N) {
+      Y[i] ~ dnorm(mu[i], tau[i])T(0,)
+      mu[i] <- Y0*(t[i]<d)+K*(Y0)/((Y0)+(K-Y0)*exp(-r[i]*(t[i]-d)))*(t[i]>=d)
+      tau[i] <- 1/sigma^2
+      r[i] <- ifelse(x[i]<Topt, C/(1 + exp(k1 + k2 * x[i])), C/(1 + exp(k1 + k2 * (2 * Topt - x[i]))))
+      
+  
+  }
+  sigma ~ dexp(.001)
+  Y0 ~ dunif(.001, .01)
+  d ~ dexp(2)
+  K ~ dunif(.1,.6)
+  C ~ dgamma(1,1)
+  k1 ~ dnorm(32,1) T(30,40)
+  k2 ~ dnorm(0, 5) T(-5,10)
+  Topt ~ dunif(13,25)
+}

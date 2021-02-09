@@ -1,0 +1,14 @@
+
+model {
+  
+  for (i in 1:N) {
+      Y[i] ~ dnorm(mu[i], tau[i])
+      mu[i] <- Y0*(t[i]<d)+K*(Y0)/((Y0)+(K-Y0)*exp(-r*(t[i]-d)))*(t[i]>=d)
+      tau[i] <- 1/sigma^2
+  }
+  sigma ~ dexp(.001)
+  r ~ dgamma(1,1)
+  K ~ dunif(.08,.2)
+  Y0 ~ dunif(.001, .01)
+  d ~ dexp(2)
+}

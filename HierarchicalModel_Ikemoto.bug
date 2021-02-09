@@ -1,0 +1,22 @@
+model {
+  
+  for (i in 1:N) {
+      Y[i] ~ dnorm(mu[i], tau[i])T(0,)
+      mu[i] <- Y0*(t[i]<exp(d))+K*(Y0)/((Y0)+(K-Y0)*exp(-r[i]*(t[i]-exp(d))))*(t[i]>=exp(d))
+      tau[i] <- 1/sigma^2
+      r[i] <-  (phi*(x[i]/TD)*exp((deltaHA/R)*((1/TD)-(1/x[i]))))/(1 + exp((deltaHL/R)*((1/TL)-(1/x[i]))) + exp((deltaHH/R)*((1/TH)-(1/x[i]))))
+  
+  }
+  sigma ~ dexp(.001)
+  Y0 ~ dunif(.001, .01)
+  d ~ dexp(2)
+  K ~ dunif(.1,.6)
+  R = 1.987
+  deltaHA ~ dnorm(16651,5)
+  deltaHL ~ dnorm(-72500,5)
+  deltaHH ~ dnorm(67500,5)
+  TL ~ dgamma(273,1)
+  TD ~ dunif(286, 298)
+  TH ~ dgamma(310,1)
+  phi ~ dunif(0,2)
+}
